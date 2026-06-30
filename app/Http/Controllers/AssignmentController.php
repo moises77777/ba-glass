@@ -83,8 +83,11 @@ class AssignmentController extends Controller
             ->orderBy('internal_code')
             ->get();
 
+        $employeesWithEquipment = Assignment::where('status', 'active')->pluck('employee_id')->toArray();
+
         $employees = Employee::with(['department', 'position'])
             ->active()
+            ->whereNotIn('id', $employeesWithEquipment)
             ->orderBy('first_name')
             ->get();
 
@@ -116,11 +119,21 @@ class AssignmentController extends Controller
         $equipment = Equipment::findOrFail($validated['equipment_id']);
         $employee = Employee::findOrFail($validated['employee_id']);
 
-        // Verificar disponibilidad
+        // Verificar disponibilidad del equipo
         if (!$equipment->isAvailable()) {
             return back()
                 ->withInput()
                 ->with('error', 'El equipo seleccionado no está disponible para asignación.');
+        }
+
+        // Verificar que el empleado no tenga ya un equipo activo
+        $activeAssignment = Assignment::where('employee_id', $employee->id)
+            ->where('status', 'active')
+            ->first();
+        if ($activeAssignment) {
+            return back()
+                ->withInput()
+                ->with('error', "El empleado {$employee->full_name} ya tiene un equipo asignado ({$activeAssignment->equipment->internal_code}). Primero debe devolverse o transferirse.");
         }
 
         DB::beginTransaction();

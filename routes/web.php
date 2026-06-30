@@ -3,11 +3,13 @@
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\BulkPurchaseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EquipmentCategoryController;
 use App\Http\Controllers\EquipmentController;
+use App\Http\Controllers\EquipmentModelController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MaintenanceController;
@@ -99,6 +101,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/warranty-expiring', [ReportController::class, 'warrantyExpiring'])->name('warranty-expiring');
         Route::get('/maintenance', [ReportController::class, 'maintenanceReport'])->name('maintenance');
     });
+
+    // Modelos de equipo
+    Route::get('/equipment-models/{equipmentModel}/data', [EquipmentModelController::class, 'apiGet'])->name('equipment-models.api');
+    Route::resource('equipment-models', EquipmentModelController::class)->except(['show']);
+
+    // Compras masivas
+    Route::resource('bulk-purchases', BulkPurchaseController::class)->only(['index', 'create', 'store', 'show']);
 
     // Catálogos
     Route::resource('departments', DepartmentController::class);

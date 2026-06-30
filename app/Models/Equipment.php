@@ -17,6 +17,7 @@ class Equipment extends Model
         'asset_tag',
         'category_id',
         'brand_id',
+        'equipment_model_id',
         'model',
         'serial_number',
         'part_number',

@@ -980,7 +980,8 @@
     elseif (request()->routeIs('history.*')) $section = 'history';
     elseif (request()->routeIs('maintenance.*')) $section = 'maintenance';
     elseif (request()->routeIs('reports.*')) $section = 'reports';
-    elseif (request()->routeIs('departments.*', 'positions.*', 'locations.*', 'brands.*', 'suppliers.*', 'categories.*')) $section = 'catalogs';
+    elseif (request()->routeIs('departments.*', 'positions.*', 'locations.*', 'brands.*', 'suppliers.*', 'categories.*', 'equipment-models.*')) $section = 'catalogs';
+    elseif (request()->routeIs('bulk-purchases.*')) $section = 'equipment';
     elseif (request()->routeIs('users.*')) $section = 'users';
     elseif (request()->routeIs('audit.*')) $section = 'audit';
     elseif (request()->routeIs('settings.*')) $section = 'settings';
@@ -1071,6 +1072,13 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('bulk-purchases.*') ? 'active' : '' }}" href="{{ route('bulk-purchases.index') }}">
+                        <i class="bi bi-cart-check"></i>
+                        <span>Compras Masivas</span>
+                    </a>
+                </li>
+
                 <div class="nav-section">
                     <span class="nav-section-title">Reportes</span>
                 </div>
@@ -1128,6 +1136,13 @@
                     <a class="nav-link {{ request()->routeIs('suppliers.*') ? 'active' : '' }}" href="{{ route('suppliers.index') }}">
                         <i class="bi bi-truck"></i>
                         <span>Proveedores</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('equipment-models.*') ? 'active' : '' }}" href="{{ route('equipment-models.index') }}">
+                        <i class="bi bi-box"></i>
+                        <span>Modelos de Equipo</span>
                     </a>
                 </li>
 
